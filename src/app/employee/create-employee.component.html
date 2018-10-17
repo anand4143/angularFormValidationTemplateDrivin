@@ -1,0 +1,184 @@
+<form #createUser="ngForm" (ngSubmit)="createUserFun(createUser)">
+  <div class="panel panel-primary">
+    <div class="panel-heading text-center">
+      <h3>Create User</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group" [class.has-error]="fullnameControl.invalid && fullnameControl.touched"
+          [class.has-success]="fullnameControl.valid" >
+            <label for="fullname" class="control-label">Full Name</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="fullname" 
+                name="fullname" 
+                id="fullname"
+                required
+                #fullnameControl="ngModel"
+                />
+                <span class="help-block" *ngIf="fullnameControl.invalid && fullnameControl.touched">Please enter fullname</span>
+          </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input 
+                      type="text" 
+                      class="form-control"
+                      [(ngModel)]="email"
+                      name="email"
+                      id="email"            
+                />
+              </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="contactno">Contact Number</label>
+            <input 
+                  type="text" 
+                  class="form-control"
+                  [(ngModel)]="contactno"
+                  name="contactno"
+                  id="contactno"
+            >
+          </div>
+        </div>
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="contactpreference">Conatact Preference</label>
+              <div class="form-control">
+                <label class="radio-inline">
+                  <input 
+                        type="radio" 
+                        value="email" 
+                        name="contactpreference" 
+                        [(ngModel)]="contactpreference"
+                   />Email
+                </label>
+                <label class="radio-inline">
+                  <input 
+                        type="radio" 
+                        name="contactpreference" 
+                        value="phone" 
+                        [(ngModel)]="contactpreference"
+                  />Phone
+                </label>
+                
+              </div>
+            </div>
+          </div>
+        
+      </div>
+
+      <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <div class="form-control">
+                <label class="radio-inline">
+                  <input 
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        [(ngModel)]="gender"
+                  >
+                  Male
+                </label>
+                <label class="radio-inline">
+                    <input 
+                          type="radio"
+                          name="gender"
+                          value="female"
+                          [(ngModel)]="gender"
+                    >
+                    Female
+                  </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="department">Department</label>
+              <select class="form-control"
+                      name="department"
+                      [(ngModel)]="department"
+                      id="department"
+              >
+              <option *ngFor="let dept of departments" [value]="dept.id">{{dept.name}}</option>
+             
+            </select>
+            </div>
+          </div>
+
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="dateOfBirth">Date of birth</label>
+            <input type="text" 
+                    [(ngModel)]="dateOfBirth"
+                    name="dateOfBirth"
+                    bsDatepicker
+                    class="form-control"
+                    [bsConfig]="datepickerConfig"
+                    placement="top"
+            >
+
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="form-group">
+            <div class="form-control">
+              <label class="checkbox-inline">
+                <input type="checkbox" 
+                      name="isActive"
+                      [(ngModel)]="isActive"
+                >Is Active
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">  
+          <div class="form-group">
+            <label for="photoPath">Photo Path</label>
+              <input 
+                  type="text" 
+                  class="form-control"
+                  [(ngModel)]="photoPath"
+                  name="photoPath"
+            >  
+          </div>   
+        </div>
+        
+          <div class="col-xs-6">
+              <div class="form-group">
+                <button type="button" class="btn btn-primary" (click)="togglePreview()">
+                  {{previewPhoto? 'Hide ':"Show "}} Preview
+                </button>
+              </div>
+          </div>
+        
+      </div>
+      <div class="row">
+          <div class="col-xs-6">  
+              <div class="form-group">
+                  <img [src]="photoPath" width="150" height="150" *ngIf="previewPhoto" 
+                />  
+              </div>   
+            </div>
+      </div>
+
+    </div>
+    <div class="panel-footer text-center">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</form>
+
+Form {{createUser.value | json}}
