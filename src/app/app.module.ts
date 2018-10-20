@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
 import { ListEmployeesComponent } from './employee/list-employees.component';
 import { CreateEmployeeComponent } from './employee/create-employee.component';
+import { appEqualValidatorDirective } from './directives/app-equal-validator.directive';
 
 
 const appRoutes : Routes = [
@@ -22,7 +23,8 @@ const appRoutes : Routes = [
   declarations: [
     AppComponent,
     ListEmployeesComponent,
-    CreateEmployeeComponent
+    CreateEmployeeComponent,
+    appEqualValidatorDirective
   ],
   imports: [
     BrowserModule,

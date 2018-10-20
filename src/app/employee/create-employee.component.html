@@ -22,41 +22,59 @@
           </div>
         </div>
         <div class="col-xs-6">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input 
-                      type="text" 
-                      class="form-control"
-                      [(ngModel)]="email"
-                      name="email"
-                      id="email"            
-                />
-              </div>
-        </div>
+            <div class="form-group" [class.has-error]="contactnoControl.invalid">
+              <label for="contactno" class="control-label">Contact Number</label>
+              <input 
+                    type="text" 
+                    class="form-control"
+                    [(ngModel)]="contactno"
+                    name="contactno"
+                    id="contactno"
+                    [required]="contactpreferenceControl.value=='phone'"
+                    #contactnoControl="ngModel"
+                    maxlength="10"
+                    (keypress)="onlyNumbers($event)"
+              >
+              <span class="help-block" *ngIf="contactnoControl.invalid">Please enter your contact number</span>
+            </div>
+          </div>
+       
+        
       </div>
       <div class="row">
-        <div class="col-xs-6">
-          <div class="form-group">
-            <label for="contactno">Contact Number</label>
-            <input 
-                  type="text" 
-                  class="form-control"
-                  [(ngModel)]="contactno"
-                  name="contactno"
-                  id="contactno"
-            >
-          </div>
-        </div>
           <div class="col-xs-6">
-            <div class="form-group">
+              <div class="form-group" [class.has-error]="emailControl.invalid">
+                  <label for="email" class="control-label">Email</label>
+                  <input 
+                        type="email" 
+                        class="form-control"
+                        [(ngModel)]="email"
+                        name="email"
+                        id="email" 
+                        [required]="contactpreferenceControl.value=='pemail'"
+                        #emailControl="ngModel" 
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
+                              
+                  />
+                  <span class="help-block" *ngIf="emailControl.errors?.required ">Pleae enter email</span>
+                  <span class="help-block" *ngIf="emailControl.errors?.pattern ">Pleae enter valid email</span>
+                 Invalid: {{emailControl.invalid}} & Touched : {{emailControl.touched}}
+                 
+                </div>
+          </div>
+        
+          <div class="col-xs-6">
+            <div class="form-group" [class.has-error]="contactpreferenceControl.invalid && contactpreferenceControl.touched">
               <label for="contactpreference">Conatact Preference</label>
               <div class="form-control">
                 <label class="radio-inline">
                   <input 
                         type="radio" 
-                        value="email" 
+                        value="pemail" 
                         name="contactpreference" 
                         [(ngModel)]="contactpreference"
+                        #contactpreferenceControl="ngModel"
+                        required
                    />Email
                 </label>
                 <label class="radio-inline">
@@ -65,10 +83,13 @@
                         name="contactpreference" 
                         value="phone" 
                         [(ngModel)]="contactpreference"
+                        #contactpreferenceControl="ngModel"
+                        required
                   />Phone
                 </label>
                 
               </div>
+              <span class="help-block" *ngIf="contactpreferenceControl.invalid && contactpreferenceControl.touched">Please select preference</span>
             </div>
           </div>
         
@@ -76,7 +97,26 @@
 
       <div class="row">
         <div class="col-xs-6">
-            <div class="form-group">
+          <div class="form-group" [class.has-error]="retypeemailControl.invalid && retypeemailControl.touched" [class.has-success]="retypeemailControl.valid">
+            <label for="retypeemail" class="control-label">Re-type Email</label>
+            <input 
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="retypeemail"
+                  #retypeemailControl="ngModel"
+                  required
+                  name="retypeemail"
+                  id="retypeemail"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  appEqualValidator="email"
+            >
+            <span class="help-block" *ngIf="retypeemailControl.errors?.required && retypeemailControl.invalid && retypeemailControl.touched">Please retype email</span>
+            <span class="help-block" *ngIf="!retypeemailControl.errors?.required && retypeemailControl.errors?.pattern && retypeemailControl.touched">Please retype valid email</span>
+            <span class="help-block" *ngIf="retypeemailControl.errors?.notequal && retypeemailControl.touched && !retypeemailControl.errors?.required && !retypeemailControl.errors?.pattern">Retype email does not match with email</span>
+          </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group" [class.has-error]="genderControl.invalid && genderControl.touched">
               <label for="gender">Gender</label>
               <div class="form-control">
                 <label class="radio-inline">
@@ -85,6 +125,8 @@
                         name="gender"
                         value="male"
                         [(ngModel)]="gender"
+                        #genderControl="ngModel"
+                        required
                   >
                   Male
                 </label>
@@ -94,28 +136,36 @@
                           name="gender"
                           value="female"
                           [(ngModel)]="gender"
+                          #genderControl="ngModel"
+                         required
                     >
                     Female
                   </label>
               </div>
+              <span class="help-block" *ngIf="genderControl.invalid && genderControl.touched">Please select gender</span>
             </div>
           </div>
-          <div class="col-xs-6">
-            <div class="form-group">
-              <label for="department">Department</label>
-              <select class="form-control"
-                      name="department"
-                      [(ngModel)]="department"
-                      id="department"
-              >
-              <option *ngFor="let dept of departments" [value]="dept.id">{{dept.name}}</option>
-             
-            </select>
-            </div>
-          </div>
+          
 
       </div>
       <div class="row">
+          <div class="col-xs-6">
+              <div class="form-group">
+                <label for="department">Department</label>
+                <select 
+                        class="form-control"
+                        name="department"
+                        [(ngModel)]="department"
+                        id="department"
+
+                >
+                <option value="-1">Please select Department</option>
+                <option *ngFor="let dept of departments" [value]="dept.id">{{dept.name}}</option>
+               
+              </select>
+              </div>
+            </div>
+
         <div class="col-xs-6">
           <div class="form-group">
             <label for="dateOfBirth">Date of birth</label>
@@ -130,20 +180,22 @@
 
           </div>
         </div>
-        <div class="col-xs-6">
-          <div class="form-group">
-            <div class="form-control">
-              <label class="checkbox-inline">
-                <input type="checkbox" 
-                      name="isActive"
-                      [(ngModel)]="isActive"
-                >Is Active
-              </label>
-            </div>
-          </div>
-        </div>
+        
       </div>
       <div class="row">
+          <div class="col-xs-6">
+              <div class="form-group">
+                <div class="form-control">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" 
+                          name="isActive"
+                          [(ngModel)]="isActive"
+                    >Is Active
+                  </label>
+                </div>
+              </div>
+            </div>
+
         <div class="col-xs-6">  
           <div class="form-group">
             <label for="photoPath">Photo Path</label>
@@ -156,6 +208,10 @@
           </div>   
         </div>
         
+          
+        
+      </div>
+      <div class="row">
           <div class="col-xs-6">
               <div class="form-group">
                 <button type="button" class="btn btn-primary" (click)="togglePreview()">
@@ -163,9 +219,6 @@
                 </button>
               </div>
           </div>
-        
-      </div>
-      <div class="row">
           <div class="col-xs-6">  
               <div class="form-group">
                   <img [src]="photoPath" width="150" height="150" *ngIf="previewPhoto" 
@@ -176,7 +229,7 @@
 
     </div>
     <div class="panel-footer text-center">
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary" [disabled]="createUser.invalid">Save</button>
     </div>
   </div>
 </form>

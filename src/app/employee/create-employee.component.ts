@@ -49,7 +49,7 @@ export class CreateEmployeeComponent implements OnInit {
       (data)=> {
         console.log(JSON.stringify(data))
         if(data['message']=='success'){
-          this.toastr.success('User register successfully', 'Toastr fun!');
+          this.toastr.success('User register successfully', 'Anand Shukla!');
          
         }
       },
@@ -57,6 +57,14 @@ export class CreateEmployeeComponent implements OnInit {
       this.toastr.error('Something wrong try sometime later', 'Error!');
       }
     );
+  }
+  onlyNumbers(e):boolean{
+    const charcode = (e.which) ? e.which : e.keyCode;
+    console.log(charcode);
+    if(charcode > 31 && (charcode < 48 || charcode > 57)){
+      return false;
+    }
+    return true;
   }
 
 }
